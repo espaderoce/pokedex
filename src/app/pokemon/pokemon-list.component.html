@@ -4,6 +4,7 @@
         <input type="text"  [(ngModel)]="search"  (ngModelChange)="searchPokemons()">
         <button class="order-btn" mat-button [matMenuTriggerFor]="menu">Generation</button>
         <mat-menu #menu="matMenu">
+          <button (click)="getPokemonByGeneration(0)" mat-menu-item>View all</button>
           <button *ngFor="let gen of generations ;let i = index" (click)="getPokemonByGeneration(i+1)" mat-menu-item>{{gen.name}}</button>
        </mat-menu>
     </div>
