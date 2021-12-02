@@ -1,0 +1,17 @@
+<div>
+    <div>
+        <span>Search: </span>
+        <input type="text"  [(ngModel)]="search"  (ngModelChange)="searchPokemons()">
+    </div>
+  <div class="pokemons">
+    <div class="itemPokemon" [ngStyle]="{'background-color':getPokemonColor(pokemon)}" *ngFor="let pokemon of pokemons">
+      <img [src]="getImageUri(pokemon)" [alt]="pokemon.name" />
+      <p [ngStyle]="{'color': getTextColor(pokemon)}">{{ pokemon.name | titlecase }}</p>
+    </div>
+  </div>
+
+  <div *ngIf="!pokemons.length" class="not-found">
+     <h2>No Pokemons to display</h2>
+     <img src="https://i2-prod.mirror.co.uk/incoming/article8407188.ece/ALTERNATES/s615b/Pokemon-Go-players-slammed.jpg" alt="">
+  </div>
+</div>
