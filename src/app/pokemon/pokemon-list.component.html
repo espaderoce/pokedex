@@ -2,8 +2,13 @@
     <div>
         <span>Search: </span>
         <input type="text"  [(ngModel)]="search"  (ngModelChange)="searchPokemons()">
+        <button class="order-btn" mat-button [matMenuTriggerFor]="menu">Generation</button>
+        <mat-menu #menu="matMenu">
+          <button *ngFor="let gen of generations ;let i = index" (click)="getPokemonByGeneration(i+1)" mat-menu-item>{{gen.name}}</button>
+       </mat-menu>
     </div>
-  <div class="pokemons">
+   
+    <div class="pokemons">
     <div class="itemPokemon" [ngStyle]="{'background-color':getPokemonColor(pokemon)}" *ngFor="let pokemon of pokemons">
       <img [src]="getImageUri(pokemon)" [alt]="pokemon.name" />
       <p [ngStyle]="{'color': getTextColor(pokemon)}">{{ pokemon.name | titlecase }}</p>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Pokemon } from '../utils/types';
+import { Generation, Pokemon } from '../utils/types';
 import { PokemonService } from './pokemon.service';
 import { pokemonColorMap } from './pokemonColorHash';
 
@@ -10,6 +10,7 @@ import { pokemonColorMap } from './pokemonColorHash';
 })
 export class PokemonListComponent implements OnInit {
   pokemons: Pokemon[] = [];
+  generations: Generation[]=[];
   private pokemonList: Pokemon[] = [];
   search: string = '';
   offset:number=0;
@@ -18,13 +19,22 @@ export class PokemonListComponent implements OnInit {
 
   ngOnInit(): void {
     this.getPokemons();
+    this.getGenerations();
     this.pokemons = this.pokemonList;
   }
   getPokemons():void{
   this.pokemonService.getPokemonList(this.offset,this.limit)
   .subscribe((data:{results:Pokemon[]} ) => this.pokemons=data.results);
   }
-
+  getGenerations():void{
+    this.pokemonService.getGenerations()
+    .subscribe((data:{results:Generation[]} ) => this.generations=data.results);
+    }
+  
+  getPokemonByGeneration(index:number){
+    this.pokemonService.getPokemonByGeneration(index)
+  .subscribe((data:{pokemon_species:Pokemon[]} ) => this.pokemons=data.pokemon_species);
+    }
   getImageUri(pokemon: Pokemon) {
     return this.pokemonService.getPokemonImageUri(
       this.getPokemonIdFromUrl(pokemon.url)
@@ -36,7 +46,7 @@ export class PokemonListComponent implements OnInit {
       id = parseUrl[parseUrl.length - 2];
     return +id;
   }
-  
+
   getTextColor(pokemon: Pokemon) {
     const pokemonColor = this.getPokemonColor(pokemon);
 
