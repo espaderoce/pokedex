@@ -61,34 +61,6 @@ export class PokemonListComponent implements OnInit {
     });
    }
 
-  getImageUri(pokemon: Pokemon) {
-    return this.pokemonService.getPokemonImageUri(
-      this.getPokemonIdFromUrl(pokemon.url)
-    );
-  }
-
-  getPokemonIdFromUrl(url: string) {
-    const parseUrl = url.split('/'),
-      id = parseUrl[parseUrl.length - 2];
-    return +id;
-  }
-
-  getTextColor(pokemon: Pokemon) {
-    const pokemonColor = this.getPokemonColor(pokemon);
-
-    switch (pokemonColor) {
-      case '#fbf6f6':
-      case '#f0f060e6':
-        return 'black';
-      default:
-        return 'white';
-    }
-  }
-
-  getPokemonColor(pokemon: Pokemon) {
-    const id = this.getPokemonIdFromUrl(pokemon.url);
-    return pokemonColorMap[id];
-  }
   searchPokemons() {
     this.pokemons = this.pokemonList.filter(
       (item) => !item.name.indexOf(this.search)
