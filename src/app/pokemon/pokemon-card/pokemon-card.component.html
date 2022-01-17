@@ -1,6 +1,6 @@
 <div class="pokemon-card" 
     [ngStyle]="{'background-color': getPokemonColor(pokemon)}"
-    >
+    (click)="goToPokemonDetails(pokemon)">
     <img [src]="getImageUri()" [alt]="pokemon.name">
     <p [ngStyle]="{'color': getTextColor(pokemon)}">{{pokemon.name | titlecase}}</p>
 </div>

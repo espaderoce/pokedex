@@ -1,0 +1,17 @@
+<div class="pokemon-stats">
+    <h2 class="mat-title">Stats</h2>
+    
+    <div class="slider-margin"
+        *ngFor="let stat of pokemonDetail?.stats">
+        <label>{{stat.stat.name}}</label>
+        <mat-slider  class="state-slider"
+            thumbLabel
+            tickInterval="1"
+            step="1"
+            min="0"
+            max="200"
+            value="{{stat.base_stat}}"
+            aria-labelledby="units"></mat-slider>
+        <label class="stats">{{stat.base_stat}}</label>
+    </div>
+</div>

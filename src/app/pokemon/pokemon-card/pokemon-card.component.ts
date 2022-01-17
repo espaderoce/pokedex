@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
 import { Pokemon } from "src/app/utils/types";
 import { PokemonService } from "../pokemon.service";
 import { pokemonColorMap } from "../pokemonColorHash";
@@ -12,10 +13,9 @@ import { pokemonColorMap } from "../pokemonColorHash";
 export class PokemonCardComponent implements OnInit {
     @Input() pokemon!: Pokemon;
 
-    constructor(private pokemonService: PokemonService) {}
+    constructor(private pokemonService: PokemonService, private router: Router) {}
 
     ngOnInit(): void {
-       console.log(this.pokemon)
     }
 
     getImageUri() {
@@ -47,4 +47,9 @@ export class PokemonCardComponent implements OnInit {
         const id = this.getPokemonIdFromUrl(pokemon.url);
         return pokemonColorMap[id];
       }
+
+      goToPokemonDetails(pokemon: Pokemon) {
+        const id =  this.getPokemonIdFromUrl(pokemon.url);
+        this.router.navigate([`/pokedex/${id}`]);
+    }
 }
