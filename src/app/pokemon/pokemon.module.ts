@@ -3,13 +3,23 @@ import { PokemonRoutingModule } from './pokemon-routing.module';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-import { PokemonListComponent } from './pokemon-list.component';
+
+import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
 import { MatSliderModule } from '@angular/material/slider';
 import { ScrollingModule } from "@angular/cdk/scrolling";
+
+//componentes
+import { PokemonListComponent } from './pokemon-list.component';
 import { PokemonCardComponent } from './pokemon-card/pokemon-card.component';
 import { PokemonDetailComponent } from './pokemon-detail/pokemon-detail.component';
 import { PokemonStatsComponent } from './pokemon-stats/pokemon-stats.component';
+import { StyleManagerService } from '../common/header/style-manager.service';
+import { HeaderComponent } from '../common/header/header.component';
+import { MenuComponent } from '../common/menu/menu.component';
 
 
 @NgModule({ 
@@ -17,7 +27,9 @@ import { PokemonStatsComponent } from './pokemon-stats/pokemon-stats.component';
     PokemonListComponent,
     PokemonCardComponent,
     PokemonDetailComponent,
-    PokemonStatsComponent
+    PokemonStatsComponent,
+    HeaderComponent,
+    MenuComponent
   ],
   imports: [
     BrowserModule,
@@ -25,13 +37,18 @@ import { PokemonStatsComponent } from './pokemon-stats/pokemon-stats.component';
     HttpClientModule,
     MatMenuModule,
     ScrollingModule,
-    MatSliderModule
+    MatSliderModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
+    MatInputModule 
   ],
   exports:[
-  PokemonListComponent,
-  PokemonRoutingModule
+  HeaderComponent,
+  MenuComponent,
+  PokemonRoutingModule,
   ],
-  providers: [],
+  providers: [StyleManagerService],
   bootstrap: []
 })
 export class PokemonModule { }

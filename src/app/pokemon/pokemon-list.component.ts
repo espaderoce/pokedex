@@ -22,10 +22,9 @@ export class PokemonListComponent implements OnInit, AfterViewInit {
   constructor(private pokemonService: PokemonService, private ngZone: NgZone, private route: ActivatedRoute,  private router: Router ) {}
 
   ngOnInit(): void {
-    const pokemons = this.route.snapshot.data['pokemons']
      this.getPokemons();
      this.getGenerations();
-    this.pokemons = this.pokemonList;
+     this.pokemons = this.pokemonList;
   }
 
   ngAfterViewInit() : void {
