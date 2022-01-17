@@ -1,32 +1,55 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, NgZone, ViewChild  } from '@angular/core';
 import { Generation, Pokemon } from '../utils/types';
 import { PokemonService } from './pokemon.service';
+import { CdkVirtualScrollViewport } from "@angular/cdk/scrolling";
 import { pokemonColorMap } from './pokemonColorHash';
+import { filter, map, pairwise, throttleTime } from "rxjs";
+import { ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'pokemon-list',
   templateUrl: './pokemon-list.component.html',
   styleUrls: ['./pokemon-list.component.less'],
 })
-export class PokemonListComponent implements OnInit {
+export class PokemonListComponent implements OnInit, AfterViewInit {
   pokemons: Pokemon[] = [];
   generations: Generation[] = [];
   private pokemonList: Pokemon[] = [];
   search: string = '';
   offset: number = 0;
-  limit: number = 25;
-  constructor(private pokemonService: PokemonService) {}
+  limit: number = 20;
+  @ViewChild('scroller') scroller?: CdkVirtualScrollViewport
+  constructor(private pokemonService: PokemonService, private ngZone: NgZone, private route: ActivatedRoute,  private router: Router ) {}
 
   ngOnInit(): void {
-    this.getPokemons();
-    this.getGenerations();
+    const pokemons = this.route.snapshot.data['pokemons']
+     this.getPokemons();
+     this.getGenerations();
     this.pokemons = this.pokemonList;
   }
+
+  ngAfterViewInit() : void {
+    this.scroller?.elementScrolled()
+    .pipe(
+        map(() => this.scroller?.measureScrollOffset('bottom')),
+        pairwise(),
+        filter(([y1, y2]) => {
+            return (y2! < y1! && y2! < 200)
+        }),
+        throttleTime(200)
+    ).subscribe(() => {
+        this.ngZone.run(() => {
+            this.getPokemons();
+        })
+    })
+}
+  
   getPokemons(): void {
+    this.offset += this.limit;
     this.pokemonService
       .getPokemonList(this.offset, this.limit)
       .subscribe(
-        (data: { results: Pokemon[] }) => (this.pokemons = this.sortPokemons(data.results))
+        (data: { results: Pokemon[] }) => (this.pokemons = this.sortPokemons([...this.pokemons, ...data.results]))
       );
   }
   getGenerations(): void {
@@ -66,4 +89,8 @@ export class PokemonListComponent implements OnInit {
       (item) => !item.name.indexOf(this.search)
     );
   }
+
+  addPokemon() {
+    this.router.navigate(['add-pokemon']);
+}
 }
